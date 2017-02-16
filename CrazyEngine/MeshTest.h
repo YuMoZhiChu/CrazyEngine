@@ -5,13 +5,16 @@
 #include <Engine\Camera3D.h>
 #include <Engine\Mesh.h>
 #include <Engine\TextureCache.h>
+#include <Engine\GameObject.h>
+#include <Engine\Window.h>
+#include <Engine\Cube.h>
 
 class MeshTest : public Test
 {
     CrazyEngine::GLSLProgram* m_ShaderProgram;
     Camera3D* m_Camera;
-    Mesh* m_Mesh;
-    TextureCache* m_TextureCache;
+	GameObject* m_GameObject;
+	Cube* m_Cube;
 
 public:
     MeshTest();
@@ -22,6 +25,6 @@ public:
 
     void CompileShaders();
 
-    void MeshTest::updateUniformVariables();
+    void updateUniformVariables();
 };
 

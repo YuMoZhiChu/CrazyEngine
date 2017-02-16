@@ -3,11 +3,11 @@
 #include <fstream>
 #include <sstream>
 
-Mesh::Mesh() : m_Texture(nullptr)
+Mesh::Mesh() : m_Texture(nullptr), m_MaxSize(0)
 {
 }
 
-Mesh::Mesh(Texture *texture)
+Mesh::Mesh(Texture *texture) : m_MaxSize(0)
 {
     m_Texture = texture;
 }
@@ -16,7 +16,7 @@ Mesh::~Mesh()
 {
 }
 
-bool Mesh::loadMesh(char * filename)
+bool Mesh::loadMesh(const char* filename)
 {
     std::ifstream infile(filename);
     if (!infile.is_open()) {
@@ -37,6 +37,7 @@ bool Mesh::loadMesh(char * filename)
             float x, y, z;
             iss >> x >> y >> z;
             tmpV.push_back(glm::vec3(x, z, y));
+			findMaxSize(x, y, z);
         }
         else if (code == "vn") {
             float x, y, z;
@@ -58,7 +59,7 @@ bool Mesh::loadMesh(char * filename)
             int j0, j1, j2;
             int k0, k1, k2;
 
-            // Every sequence of numbers (i0, i1, i2) describes a vertex of the nex face (or Triangle)
+            // Every sequence of numbers (i0, i1, i2) describes a vertex of the next face (or Triangle)
             // i0: says which vertex to use
             // i1: says which texture cordinates (UV) to use
             // i2: says which normal to use 
@@ -71,17 +72,19 @@ bool Mesh::loadMesh(char * filename)
             i1--; j1--; k1--;
             i2--; j2--; k2--;
 
-            Triangle newTriangle (i1, j1, k1);
-            m_Triangles.push_back(newTriangle);
-
+			// Load the position and normal of every vertex
             m_Vertices[i1].pos = tmpV[i0];
             m_Vertices[i1].norm = tmpN[i2];
             m_Vertices[j1].pos = tmpV[j0];
             m_Vertices[j1].norm = tmpN[j2];
             m_Vertices[k1].pos = tmpV[k0];
             m_Vertices[k1].norm = tmpN[k2];
-        }
 
+			// Save the position of the every vertex on the array m_Vertices
+			// to use later when we build the elements array (m_EBO)
+			Triangle newTriangle(i1, j1, k1);
+			m_Triangles.push_back(newTriangle);
+        }
     }
     return true;
 }
@@ -106,14 +109,14 @@ void Mesh::loadGPUMesh(CrazyEngine::GLSLProgram* shaderProgram)
     glBufferData(GL_ARRAY_BUFFER, m_Vertices.size() * sizeof(VertexMesh), &m_Vertices[0], GL_STATIC_DRAW);
 
     GLuint vertPos = shaderProgram->getAttrLocation("vertexPosition");
-    GLuint textCord = shaderProgram->getAttrLocation("texCoord");
+    GLuint textCord = shaderProgram->getAttrLocation("texCord");
 
     //The vertex attribute array needs to be enabled.
     glEnableVertexAttribArray(vertPos);
     glEnableVertexAttribArray(textCord);
 
     // Now we can specify how the data for that input is retrieved from the array
-    glVertexAttribPointer(vertPos, 2, GL_FLOAT, GL_FALSE, sizeof(VertexMesh), 0);
+    glVertexAttribPointer(vertPos, 3, GL_FLOAT, GL_FALSE, sizeof(VertexMesh), 0);
     glVertexAttribPointer(textCord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexMesh), (void*)offsetof(VertexMesh, uv));
 
     if (m_EBO == 0) {
@@ -144,3 +147,18 @@ void Mesh::drawMesh()
 
     glBindVertexArray(0);
 }
+
+void Mesh::findMaxSize(float &x, float &y, float &z)
+{
+	if (x > m_MaxSize) {
+		m_MaxSize = x;
+	}
+	if (y > m_MaxSize) {
+		m_MaxSize = x;
+	}
+	if (z > m_MaxSize) {
+		m_MaxSize = x;
+	}
+}
+
+

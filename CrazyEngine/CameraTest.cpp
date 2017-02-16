@@ -8,7 +8,6 @@
 CameraTest::CameraTest()
 {
     m_ShaderProgram = new CrazyEngine::GLSLProgram;
-    m_TextureCache = new TextureCache;
     m_Camera = new Camera3D(glm::vec3(1.2, 1.2, 1.2), 800, 600);
 }
 
@@ -20,7 +19,7 @@ CameraTest::~CameraTest()
 void CameraTest::Init()
 {
     CompileShaders();
-    m_Sprite = new Sprite(m_TextureCache->getTexture("textures/ronnie.jpg"));
+    m_Sprite = new Sprite(TextureCache::getTextureCache()->getTexture("textures/ronnie.jpg"));
     m_Sprite->Init(m_ShaderProgram);
 }
 

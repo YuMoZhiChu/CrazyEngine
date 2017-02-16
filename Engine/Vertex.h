@@ -24,3 +24,12 @@ struct Vertex {
     UV uv;
 };
 
+struct Vertex3D {
+	float x;
+	float y;
+	float z;
+
+	Color color;
+
+	UV uv;
+};

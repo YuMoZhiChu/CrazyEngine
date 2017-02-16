@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <Engine\Window.h>
-#include <Engine\Core.h>
 #include "Test.h"
 
 #define NUMTEST 5
@@ -26,12 +25,15 @@ int main(int argc, char* argv[]) {
 
     currentTest->Init();
 
-    while (gameState != QUIT) {
-        processEvent();
+    while (window->getGameState() != CrazyEngine::GameState::QUIT) {
+        window->processEvent();
 
-        glClearDepth(1.0);
+		glEnable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		window->calculateDeltaTime();
+		window->calculateFPS();
+		//window->showFPS();
         currentTest->draw();
 
         SDL_GL_SwapWindow(window->getSDLWindow());

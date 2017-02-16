@@ -10,7 +10,6 @@
 class CameraTest : public Test
 {
     CrazyEngine::GLSLProgram* m_ShaderProgram;
-    TextureCache* m_TextureCache;
     Sprite* m_Sprite;
     Camera3D* m_Camera;
 

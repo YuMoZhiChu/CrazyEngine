@@ -9,7 +9,6 @@
 class SpriteTest : public Test
 {
     CrazyEngine::GLSLProgram* m_ShaderProgram;
-    TextureCache* m_TextureCache;
     Sprite* m_Sprite;
 
 public:

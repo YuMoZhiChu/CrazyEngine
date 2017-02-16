@@ -5,17 +5,6 @@
 #include <iostream>
 #include <fstream>
 
-void processEvent() {
-    SDL_Event SDL_event;
-    while (SDL_PollEvent(&SDL_event))
-    {
-        switch (SDL_event.type) {
-        case SDL_QUIT:
-            gameState = QUIT;
-            break;
-        }
-    }
-}
 
 bool fileExist(const std::string& filePath)
 {

@@ -7,9 +7,10 @@ namespace CrazyEngine {
 
 	Window* Window::m_Window = nullptr;
 
-    Window::Window()
+    Window::Window() : m_currentFPS(0), m_deltaTime(0)
     {
         m_Display = new SDL_DisplayMode[SDL_GetNumVideoDisplays()];
+		m_InputManager = InputManager::getInpuManager();
     }
 
 	Window* Window::getWindow()
@@ -20,18 +21,75 @@ namespace CrazyEngine {
 		return m_Window;
 	}
 
-    Window::~Window()
+	void Window::showFPS()
+	{
+		static int Timer = SDL_GetTicks();
+
+		int currentTimer = SDL_GetTicks();
+		int deltaTime = currentTimer - Timer;
+
+		// calculates the average of the last 100 FPS detected every 1 sec
+		if (deltaTime > 1000) {
+			Timer = currentTimer;
+			int time = 0;
+			for (int i = 0; i < (sizeof(m_detectedFPS) / sizeof(*m_detectedFPS)); i++) {
+				time += m_detectedFPS[i];
+			}
+			m_currentFPS = time / 100;
+			std::cout << m_currentFPS << std::endl;
+		}
+	}
+
+	void Window::calculateDeltaTime()
+	{
+		static float Timer = SDL_GetTicks();
+
+		float currentTimer = SDL_GetTicks();
+		m_deltaTime = (currentTimer - Timer) / 1000;
+		Timer = currentTimer;
+	}
+
+	void Window::processEvent()
+	{
+		SDL_Event SDL_event;
+		while (SDL_PollEvent(&SDL_event))
+		{
+			switch (SDL_event.type) {
+			case SDL_QUIT:
+				m_GameState = QUIT;
+				break;
+			case SDL_MOUSEMOTION:
+				m_InputManager->setMouseCoords(SDL_event.motion.x, SDL_event.motion.y);
+				break;
+			case SDL_KEYDOWN:
+				m_InputManager->pressKey(SDL_event.key.keysym.sym);
+				break;
+			case SDL_KEYUP:
+				m_InputManager->releaseKey(SDL_event.key.keysym.sym);
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				m_InputManager->pressKey(SDL_event.button.button);
+				break;
+			case SDL_MOUSEBUTTONUP:
+				m_InputManager->releaseKey(SDL_event.button.button);
+				break;
+			}
+		}
+	}
+
+	Window::~Window()
     {
+		delete m_Window;
     }
 
 
-    SDL_Window* Window::initSystem() {
+    SDL_Window* Window::initSystem(int width, int height, int desiredFPS) {
 
         setOpenGL();
 
         SDL_Init(SDL_INIT_VIDEO);
 
-        m_SDLWindow = SDL_CreateWindow("test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_OPENGL);
+        m_SDLWindow = SDL_CreateWindow("test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
 
         if (m_SDLWindow == nullptr)
         {
@@ -57,7 +115,7 @@ namespace CrazyEngine {
 
         // Set VSync
         SDL_GL_SetSwapInterval(1); // enabled
-                                   //SDL_GL_SetSwapInterval(0); // disabled
+        //SDL_GL_SetSwapInterval(0); // disabled
 
         getDisplayInfo();
 
@@ -69,6 +127,8 @@ namespace CrazyEngine {
         //glBlendFunc defines the operation of blending for all draw buffers when it is enabled.
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		m_desiredFPS = desiredFPS;
+
         return m_SDLWindow;
     }
 
@@ -78,6 +138,20 @@ namespace CrazyEngine {
         SDL_DestroyWindow(m_SDLWindow);
         SDL_Quit();
     }
+
+	void Window::calculateFPS()
+	{
+		static int Timer = SDL_GetTicks();
+		static int i = 100;
+
+		int currentTimer = SDL_GetTicks();
+
+		if (Timer != currentTimer) {
+			i++;
+			m_detectedFPS[i % 100] = 1000 / (currentTimer - Timer);
+			Timer = currentTimer;
+		}
+	}
 
 
     //  tell SDL that we want a forward compatible OpenGL 3.2 context:

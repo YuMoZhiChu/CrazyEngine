@@ -6,7 +6,6 @@
 SpriteTest::SpriteTest()
 {
     m_ShaderProgram = new CrazyEngine::GLSLProgram;
-    m_TextureCache = new TextureCache;
 }
 
 
@@ -17,8 +16,8 @@ SpriteTest::~SpriteTest()
 void SpriteTest::Init()
 {
     CompileShaders();    
-    m_Sprite = new Sprite(m_TextureCache->getTexture("textures/ronnie.jpg"));
-    m_Sprite->setSecondTexture(m_TextureCache->getTexture("textures/kristina.jpg"));
+    m_Sprite = new Sprite(TextureCache::getTextureCache()->getTexture("textures/ronnie.jpg"));
+    m_Sprite->setSecondTexture(TextureCache::getTextureCache()->getTexture("textures/kristina.jpg"));
     m_Sprite->Init(m_ShaderProgram);
 }
 

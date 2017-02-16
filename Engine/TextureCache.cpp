@@ -4,13 +4,28 @@
 #include "Core.h"
 
 
+TextureCache* TextureCache::m_TextureCache = nullptr;
+
 TextureCache::TextureCache()
 {
+}
+
+TextureCache * TextureCache::getTextureCache()
+{
+	if (m_TextureCache == nullptr) {
+		m_TextureCache = new TextureCache;
+	}
+	return m_TextureCache;
 }
 
 
 TextureCache::~TextureCache()
 {
+	for each (auto var in m_TextureMap)
+	{
+		delete var.second;
+	}
+	delete m_TextureCache;
 }
 
 Texture* TextureCache::getTexture(std::string texturePath, fileExtension flag) {

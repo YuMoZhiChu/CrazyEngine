@@ -30,18 +30,24 @@ class Mesh
 
     int m_nElements;
 
+	float m_MaxSize;
+
 public:
     Mesh();
-    Mesh(const std::string& texturePath);
     Mesh(Texture* texture);
     ~Mesh();
 
-    bool loadMesh(char* path);
+	void setTexture(Texture* texture)
+	{
+		m_Texture = texture;
+	}
+
+    bool loadMesh(const char* path);
 
     void loadGPUMesh(CrazyEngine::GLSLProgram* shaderProgram);
 
     void drawMesh();
 
-    bool loadTexture(const std::string& texturePath);
+	void findMaxSize(float &x, float &y, float &z);
 };
 

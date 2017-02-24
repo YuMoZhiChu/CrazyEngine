@@ -6,19 +6,20 @@
 
 class Player : public GameObject
 {
-	CrazyEngine::GLSLProgram* m_ShaderProgram;
-	Engine::Pool<Cube> m_Bullets;
+	Engine::Pool<GameObject> m_Bullets;
+
+	std::vector<Engine::PoolObject<GameObject>*> m_ActiveBullets;
 
 	void inputCheck();
+
+	void updateBullets();
 
 public:
 	Player(Texture* texture);
 	~Player();
 
-	void init(CrazyEngine::GLSLProgram* shader, int nBullets);
+	void init(Engine::GLSLProgram* shader, int nBullets);
 
 	void update();
-
-	void draw();
 };
 

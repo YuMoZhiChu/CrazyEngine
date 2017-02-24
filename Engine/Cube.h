@@ -15,7 +15,7 @@ class Cube
 public:
 	Cube(Texture* texture);
 	~Cube();
-	void Init(CrazyEngine::GLSLProgram * shaderProgram);
-	void draw(CrazyEngine::GLSLProgram * shaderProgram);
+	void Init(Engine::GLSLProgram * shaderProgram);
+	void draw();
 };
 

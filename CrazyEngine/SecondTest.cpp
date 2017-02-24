@@ -30,7 +30,7 @@ SecondTest::SecondTest() : m_VBO(0), m_VAO(0), m_EBO(0)
     m_Square[3].x = -0.5;
     m_Square[3].y = -0.5;
     m_Square[3].color.r = 1;
-    m_ShaderProgram = new CrazyEngine::GLSLProgram;
+    m_ShaderProgram = new Engine::GLSLProgram;
 }
 
 

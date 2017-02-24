@@ -5,7 +5,7 @@
 #include <string>
 #include "InputManager.h"
 
-namespace CrazyEngine {
+namespace Engine {
 
 	enum GameState {
 		START,

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-namespace CrazyEngine {
+namespace Engine {
 
     bool shaderCompilationChecking(GLuint shader)
     {

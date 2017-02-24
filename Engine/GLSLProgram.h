@@ -3,7 +3,7 @@
 #include <string>
 #include <glew.h>
 
-namespace CrazyEngine {
+namespace Engine {
 
     //Reference: http://www.opengl.org/wiki/Shader_Compilation
 

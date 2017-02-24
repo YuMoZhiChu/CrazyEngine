@@ -6,11 +6,13 @@ in vec2 texCord;
 out vec2 fragmUV;
 
 uniform mat4 cameraMatrix;
-uniform mat4 modelMatrix;
+uniform mat4 modelMatrix[10];
+
+uniform int ID;
 
 void main()
 {		
-	gl_Position = cameraMatrix * modelMatrix * vec4(vertexPosition, 1.0);
+	gl_Position = cameraMatrix * modelMatrix[ID] * vec4(vertexPosition, 1.0);
 	
 	fragmUV = texCord;
 }

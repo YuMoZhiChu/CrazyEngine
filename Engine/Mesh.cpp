@@ -89,7 +89,7 @@ bool Mesh::loadMesh(const char* filename)
     return true;
 }
 
-void Mesh::loadGPUMesh(CrazyEngine::GLSLProgram* shaderProgram)
+void Mesh::loadGPUMesh(Engine::GLSLProgram* shaderProgram)
 {
     if (m_VAO == 0) {
         glGenVertexArrays(1, &m_VAO);

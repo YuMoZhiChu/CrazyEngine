@@ -11,7 +11,7 @@
 
 class MeshTest : public Test
 {
-    CrazyEngine::GLSLProgram* m_ShaderProgram;
+    Engine::GLSLProgram* m_ShaderProgram;
     Camera3D* m_Camera;
 	GameObject* m_GameObject;
 	Cube* m_Cube;

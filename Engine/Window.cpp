@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-namespace CrazyEngine {
+namespace Engine {
 
 	Window* Window::m_Window = nullptr;
 
@@ -51,6 +51,8 @@ namespace CrazyEngine {
 
 	void Window::processEvent()
 	{
+		m_InputManager->update();
+
 		SDL_Event SDL_event;
 		while (SDL_PollEvent(&SDL_event))
 		{

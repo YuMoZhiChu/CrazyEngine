@@ -7,7 +7,7 @@
 
 CameraTest::CameraTest()
 {
-    m_ShaderProgram = new CrazyEngine::GLSLProgram;
+    m_ShaderProgram = new Engine::GLSLProgram;
     m_Camera = new Camera3D(glm::vec3(1.2, 1.2, 1.2), 800, 600);
 }
 
@@ -27,7 +27,7 @@ void CameraTest::draw()
 {
     static float time = 0;
 
-    int refreshRate = CrazyEngine::Window::getWindow()->getMonitoRefreshRate();
+    int refreshRate = Engine::Window::getWindow()->getMonitoRefreshRate();
     time++;
     if (time > refreshRate) {
         time = 0;

@@ -5,7 +5,7 @@
 
 SpriteTest::SpriteTest()
 {
-    m_ShaderProgram = new CrazyEngine::GLSLProgram;
+    m_ShaderProgram = new Engine::GLSLProgram;
 }
 
 
@@ -25,7 +25,7 @@ void SpriteTest::draw()
 {
     static float time = 0;
 
-    int refreshRate = CrazyEngine::Window::getWindow()->getMonitoRefreshRate();
+    int refreshRate = Engine::Window::getWindow()->getMonitoRefreshRate();
     time++;
     if (time > refreshRate) {
         time = 0;

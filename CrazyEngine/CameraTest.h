@@ -9,7 +9,7 @@
 
 class CameraTest : public Test
 {
-    CrazyEngine::GLSLProgram* m_ShaderProgram;
+    Engine::GLSLProgram* m_ShaderProgram;
     Sprite* m_Sprite;
     Camera3D* m_Camera;
 

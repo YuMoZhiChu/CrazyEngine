@@ -11,7 +11,7 @@
 
 class Game
 {
-	std::vector<CrazyEngine::GLSLProgram*> m_ShaderPrograms;
+	Engine::GLSLProgram* m_CameraShader;
 	Camera3D* m_Camera;
 	Player* m_Player;
 

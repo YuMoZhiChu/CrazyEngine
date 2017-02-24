@@ -44,7 +44,7 @@ public:
 
     bool loadMesh(const char* path);
 
-    void loadGPUMesh(CrazyEngine::GLSLProgram* shaderProgram);
+    void loadGPUMesh(Engine::GLSLProgram* shaderProgram);
 
     void drawMesh();
 

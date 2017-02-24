@@ -12,7 +12,7 @@ class FirstTest : public Test
 {
     GLuint m_VBO; //Vertex Buffer Object
     GLuint m_VAO; //Vertex Array Object
-    CrazyEngine::GLSLProgram* m_ShaderProgram;
+    Engine::GLSLProgram* m_ShaderProgram;
     Vertex m_Square[3];
 
     void CompileShaders();

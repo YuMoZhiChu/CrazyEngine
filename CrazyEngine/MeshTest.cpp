@@ -6,7 +6,7 @@
 
 MeshTest::MeshTest()
 {
-    m_ShaderProgram = new CrazyEngine::GLSLProgram;
+    m_ShaderProgram = new Engine::GLSLProgram;
 
     m_Camera = new Camera3D(glm::vec3(2.2, 2.2, 2.0), 800, 600);
 	m_GameObject = new GameObject(TextureCache::getTextureCache()->getTexture("textures/dark_fighter_color.pbm", PBM));
@@ -43,13 +43,13 @@ void MeshTest::draw()
 
 		//m_GameObject->setPosition(glm::vec3(newPosition.x, newPosition.y, newPosition.z));
 
-		m_GameObject->setPosition(m_GameObject->getXaxis() * CrazyEngine::Window::getWindow()->getDeltaTime() * 10.0f);
+		m_GameObject->setPosition(m_GameObject->getXaxis() * Engine::Window::getWindow()->getDeltaTime() * 10.0f);
 	}
 
 	if (InputManager::getInpuManager()->isKeyDown(SDLK_d)) {
 		glm::vec4 newPosition = glm::vec4(-1.0, 0.0, 0.0, 0.0)
 			* m_GameObject->getRotationMatrix()
-			* CrazyEngine::Window::getWindow()->getDeltaTime();
+			* Engine::Window::getWindow()->getDeltaTime();
 
 		m_GameObject->setPosition(glm::vec3(newPosition.x, newPosition.y, newPosition.z));
 	}

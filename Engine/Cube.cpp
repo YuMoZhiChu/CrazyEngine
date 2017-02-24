@@ -89,7 +89,7 @@ Cube::~Cube()
 {
 }
 
-void Cube::Init(CrazyEngine::GLSLProgram* shaderProgram)
+void Cube::Init(Engine::GLSLProgram* shaderProgram)
 {
 	if (m_VAO == 0) {
 		glGenVertexArrays(1, &m_VAO);
@@ -160,7 +160,7 @@ void Cube::Init(CrazyEngine::GLSLProgram* shaderProgram)
 	glBindVertexArray(0);
 }
 
-void Cube::draw(CrazyEngine::GLSLProgram* shaderProgram)
+void Cube::draw()
 {
 	glBindVertexArray(m_VAO);
 

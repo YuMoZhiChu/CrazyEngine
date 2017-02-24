@@ -8,7 +8,7 @@
 
 class SpriteTest : public Test
 {
-    CrazyEngine::GLSLProgram* m_ShaderProgram;
+    Engine::GLSLProgram* m_ShaderProgram;
     Sprite* m_Sprite;
 
 public:

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
 
 namespace Engine {
 
@@ -17,10 +18,6 @@ namespace Engine {
 			return Element;
 		}
 
-		void draw() {
-			Object->draw();
-		}
-
 		friend class Pool<Object>;
 	};
 
@@ -28,7 +25,6 @@ namespace Engine {
 	class Pool {
 		std::vector<PoolObject<Object>*> m_Elements;
 		PoolObject<Object>* m_NextFreeElement;
-		PoolObject<Object>* m_PrevFreeElement;
 
 	public:
 		Pool();
@@ -53,12 +49,11 @@ namespace Engine {
 
 	template <class Object>
 	Pool<Object>::Pool():
-		m_NextFreeElement(nullptr),
-		m_PrevFreeElement(nullptr)
+		m_NextFreeElement(nullptr)
 	{}
 
 	template <class Object>
-	Pool<Object>::Pool(int size) : m_PrevFreeElement(nullptr)
+	Pool<Object>::Pool(int size) : m_NextFreeElement(nullptr)
 	{
 		if (size > 0) {
 			PoolObject<Object>* newElement = new PoolObject<Object>;
@@ -70,7 +65,6 @@ namespace Engine {
 				m_Elements[i - 1]->NextElement = m_Elements[i];
 			}
 		}
-		m_NextFreeElement = m_Elements[0];
 	};
 
 
@@ -78,32 +72,44 @@ namespace Engine {
 	void Pool<Object>::addElement(Object* newObject) {
 		PoolObject<Object>* newElement = new PoolObject<Object>;
 		newElement->Element = newObject;
-		m_Elements.push_back(newElement);
-		if (m_NextFreeElement != nullptr) {
-			m_PrevFreeElement = m_NextFreeElement;
-			m_NextFreeElement = newElement;
-			m_PrevFreeElement->NextElement = m_NextFreeElement;
-		}
-		else {
+		if (m_NextFreeElement == nullptr) {
+			m_Elements.push_back(newElement);
 			m_NextFreeElement = newElement;
 		}
+		else
+		{
+			PoolObject<Object>* prevNextElement = m_Elements.back()->NextElement;
+			m_Elements.back()->NextElement = newElement;
+			m_Elements.push_back(newElement);
+			newElement->NextElement = prevNextElement;
+		}	
 	}
 
 
 	template <class Object>
 	PoolObject<Object>* Pool<Object>::getElement() {
-		m_PrevFreeElement = m_NextFreeElement;
-		m_PrevFreeElement->state = false;
-		m_NextFreeElement = m_NextFreeElement.NextElement;
-		return m_PrevFreeElement;
+
+		for (int i=0 ; i < m_Elements.size(); i++)
+		{
+			std::cout << &m_Elements[i] << " " << m_Elements[i]->state << std::endl;
+		}
+		std::cout << std::endl;
+
+		if (m_NextFreeElement != nullptr) {
+			PoolObject<Object>* element = m_NextFreeElement;
+			m_NextFreeElement = m_NextFreeElement->NextElement;
+			element->state = false;
+			return element;
+		}
+		return nullptr;
 	};
 
 	template <class Object>
 	void Pool<Object>::returnElement(PoolObject<Object>* element) {
-		m_PrevFreeElement = m_NextFreeElement;
+		element->state = true;
+		PoolObject<Object>* prevNextElement = m_NextFreeElement;
 		m_NextFreeElement = element;
-		m_NextFreeElement.NextElement = m_PrevFreeElement;
-		m_NextFreeElement->state = true;
+		m_NextFreeElement->NextElement = prevNextElement;
 	};
 
 }

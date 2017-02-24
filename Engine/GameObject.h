@@ -3,13 +3,21 @@
 #include "Mesh.h"
 #include "Texture.h"
 #include "GLSLProgram.h"
+#include "Cube.h"
 
 #include <glm.hpp>
-
  
+enum GameObjectState {
+	CUBE, MESH
+};
+
 class GameObject
 {
+	int m_ID;
+
 	Mesh* m_Mesh;
+
+	Cube* m_Cube;
 
 	glm::mat4 m_ModelMatrix;
 	glm::mat4 m_TranslationMatrix;
@@ -17,7 +25,6 @@ class GameObject
 	glm::mat4 m_ScaleMatrix;
 
 	glm::mat4 m_TempRotationMatrix;
-	glm::mat4 m_TempModelMatrix;
 
 	glm::vec3 m_Position;
 	glm::vec3 m_Rotation;
@@ -25,13 +32,13 @@ class GameObject
 	glm::vec3 m_TempRotation;
 
 	bool m_ModelMatrixNeedUpdate;
-	bool m_TempModelMatrixNeedUpdate;
 
-	void updateModelMatrix(CrazyEngine::GLSLProgram* shader);
+	bool m_State;
 
 public:
 
 	void setPosition(glm::vec3 position);
+	void move(glm::vec3 position);
 	void setRotation(glm::vec3 axis, float rotation);
 	void setScale(glm::vec3 scale);
 
@@ -79,11 +86,27 @@ public:
 		}
 	}
 
-	void initMesh(CrazyEngine::GLSLProgram* shader, const std::string& meshPath);
+	void initMesh(Engine::GLSLProgram* shader, const std::string& meshPath);
 	
-	virtual void draw(CrazyEngine::GLSLProgram* shader);
+	void initCube(Engine::GLSLProgram* shader);
 
-	GameObject(Texture* texture);
+	glm::mat4 updateModelMatrix();
+
+	void draw(Engine::GLSLProgram* shader);
+
+	void enableGameObject() {
+		m_State = true;
+	}
+
+	void disableGameObject() {
+		m_State = false;
+	}
+
+	bool getState() {
+		return m_State;
+	}
+
+	GameObject(Texture* texture, GameObjectState state = MESH);
 	~GameObject();
 };
 

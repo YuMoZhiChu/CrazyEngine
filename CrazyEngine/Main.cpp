@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 
     std::cout << "Number of the test: [1-" << NUMTEST << "]" << std::endl;
 
-	CrazyEngine::Window* window = CrazyEngine::Window::getWindow();
+	Engine::Window* window = Engine::Window::getWindow();
 
 	window->initSystem();
 
@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 
     currentTest->Init();
 
-    while (window->getGameState() != CrazyEngine::GameState::QUIT) {
+    while (window->getGameState() != Engine::GameState::QUIT) {
         window->processEvent();
 
 		glEnable(GL_DEPTH_TEST);

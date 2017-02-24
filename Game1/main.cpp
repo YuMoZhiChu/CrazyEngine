@@ -8,14 +8,14 @@
 
 int main(int argc, char* argv[]) {
 
-	CrazyEngine::Window* window = CrazyEngine::Window::getWindow();
+	Engine::Window* window = Engine::Window::getWindow();
 
 	window->initSystem();
 
 	Game game;
 	game.init();
 
-	while (window->getGameState() != CrazyEngine::GameState::QUIT) {
+	while (window->getGameState() != Engine::GameState::QUIT) {
 		window->processEvent();
 
 		glEnable(GL_DEPTH_TEST);

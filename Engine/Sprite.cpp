@@ -42,7 +42,7 @@ Sprite::~Sprite()
 {
 }
 
-void Sprite::Init(CrazyEngine::GLSLProgram* shaderProgram)
+void Sprite::Init(Engine::GLSLProgram* shaderProgram)
 {
     if (m_VAO == 0) {
         glGenVertexArrays(1, &m_VAO);
@@ -106,7 +106,7 @@ void Sprite::Init(CrazyEngine::GLSLProgram* shaderProgram)
     glBindVertexArray(0);
 }
 
-void Sprite::draw(CrazyEngine::GLSLProgram* shaderProgram, float time )
+void Sprite::draw(Engine::GLSLProgram* shaderProgram, float time )
 {
     glBindVertexArray(m_VAO);
 
@@ -127,7 +127,7 @@ void Sprite::draw(CrazyEngine::GLSLProgram* shaderProgram, float time )
     glBindVertexArray(0);
 }
 
-void Sprite::alternateSprites(CrazyEngine::GLSLProgram* shaderProgram, float time)
+void Sprite::alternateSprites(Engine::GLSLProgram* shaderProgram, float time)
 {
     GLuint weight = shaderProgram->getUniformLocation("weight");
     glUniform1f(weight, time);

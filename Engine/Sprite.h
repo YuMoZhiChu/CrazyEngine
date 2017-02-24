@@ -18,7 +18,7 @@ class Sprite
     Texture* m_Texture;
     Texture* m_SecondTexture;
 
-    void alternateSprites(CrazyEngine::GLSLProgram* shaderProgram, float time);
+    void alternateSprites(Engine::GLSLProgram* shaderProgram, float time);
 
 public:
 
@@ -29,7 +29,7 @@ public:
     Sprite(Texture* texture, float x = -0.5, float y = -0.5, float width = 1, float height = 1);
     ~Sprite();
 
-    void Init(CrazyEngine::GLSLProgram* shaderProgram);
+    void Init(Engine::GLSLProgram* shaderProgram);
 
-    void draw(CrazyEngine::GLSLProgram* shaderProgram, float time = 1.0f);
+    void draw(Engine::GLSLProgram* shaderProgram, float time = 1.0f);
 };

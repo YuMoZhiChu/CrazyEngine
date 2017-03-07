@@ -7,16 +7,16 @@
 void Player::inputCheck()
 {
 	if (InputManager::getInpuManager()->isKeyDown(SDLK_a)) {
-		GameObject::move(GameObject::getXaxis() * Engine::Window::getWindow()->getDeltaTime());
-		if (GameObject::getTempRotation().y < 20) {
-			GameObject::setTempRotation(GameObject::getYaxis(), 90.0f * Engine::Window::getWindow()->getDeltaTime());
+		GameObject::move(glm::vec3(-1.0f, 0.0f, 0.0f) * Engine::Window::getWindow()->getPhysicDeltaTime());
+		if (GameObject::getTempRotation().z < 20) {
+			GameObject::setTempRotation(glm::vec3(0.0f, 0.0f, 1.0f), 90.0f * Engine::Window::getWindow()->getPhysicDeltaTime());
 		}
 	}
 	else {
 		if (InputManager::getInpuManager()->isKeyDown(SDLK_d)) {
-			GameObject::move(-1.0f * GameObject::getXaxis() * Engine::Window::getWindow()->getDeltaTime());
-			if (GameObject::getTempRotation().y > -20) {
-				GameObject::setTempRotation(GameObject::getYaxis(), -90.0f * Engine::Window::getWindow()->getDeltaTime());
+			GameObject::move(glm::vec3(1.0f, 0.0f, 0.0f) * Engine::Window::getWindow()->getPhysicDeltaTime());
+			if (GameObject::getTempRotation().z > -20) {
+				GameObject::setTempRotation(glm::vec3(0.0f, 0.0f, 1.0f), -90.0f * Engine::Window::getWindow()->getPhysicDeltaTime());
 			}		
 		}
 		else {
@@ -27,7 +27,7 @@ void Player::inputCheck()
 	if (InputManager::getInpuManager()->isKeyPressed(SDL_BUTTON_LEFT)) {
 		Engine::PoolObject<GameObject>* bullet = m_Bullets.getElement();
 		if (bullet != nullptr) {
-			bullet->getElement()->enableGameObject();
+			bullet->getElement()->activateGameObject(true);
 			bullet->getElement()->setPosition(GameObject::getPosition());
 			m_ActiveBullets.push_back(bullet);
 		}
@@ -35,27 +35,31 @@ void Player::inputCheck()
 }
 
 
-Player::Player(Texture* texture) : GameObject(texture)
+Player::Player(Mesh* mesh) : GameObject(mesh)
 {
 }
 
-
 Player::~Player()
 {
+	for each (auto var in m_Bullets.getElements())
+	{
+		delete var->getElement();
+	}
 }
 
 void Player::init(Engine::GLSLProgram* shader, int nBullets)
 {	
-	GameObject::initMesh(shader, "meshes/dark_fighter_6.obj");
-	GameObject::setScale(glm::vec3(0.02f, 0.02f, 0.02f));
-	GameObject::setRotation(glm::vec3(0.0f, 0.0f, 1.0f), 45);
+	GameObject::setPosition(glm::vec3(0.0, 0.0, 0.2));
+	GameObject::setScale(glm::vec3(0.01f, 0.01f, 0.01f));
+	GameObject::setRotation(glm::vec3(0.0f, 1.0f, 0.0f), -90);
 	
 	for (int i = 0; i < nBullets; i++) {
 		GameObject* newBullet = new GameObject(TextureCache::getTextureCache()->getTexture("textures/ronnie.jpg"), 
 												GameObjectState::CUBE);
 		newBullet->initCube(shader);
-		newBullet->setScale(glm::vec3(0.02f, 0.02f, 0.02f));
-		newBullet->disableGameObject();
+		newBullet->setScale(glm::vec3(0.01f, 0.01f, 0.01f));
+		newBullet->setRotation(GameObject::getRotation());
+		newBullet->activateGameObject(false);
 		m_Bullets.addElement(newBullet);
 	}
 }
@@ -70,11 +74,12 @@ void Player::updateBullets()
 {
 	for (int i =0 ; i < m_ActiveBullets.size(); i++)
 	{
-		m_ActiveBullets[i]->getElement()->move(- GameObject::getYaxis() * Engine::Window::getWindow()->getDeltaTime());
+		m_ActiveBullets[i]->getElement()->move(glm::vec3(0.0f, 0.0f, -1.0f) 
+												* Engine::Window::getWindow()->getPhysicDeltaTime() * 2.0f);
 		glm::vec3 position = m_ActiveBullets[i]->getElement()->getPosition();
-		if (position.y <= -5)
+		if (position.z <= -6)
 		{
-			m_ActiveBullets[i]->getElement()->disableGameObject();
+			m_ActiveBullets[i]->getElement()->activateGameObject(false);
 			m_Bullets.returnElement(m_ActiveBullets[i]);
 			m_ActiveBullets[i] = m_ActiveBullets.back();
 			m_ActiveBullets.pop_back();
@@ -82,4 +87,23 @@ void Player::updateBullets()
 	}
 }
 
+bool Player::checkBulletsCollision(GameObject* gameObject)
+{
+	for (int i = 0; i < m_ActiveBullets.size(); i++)
+	{
+		if (m_ActiveBullets[i]->getElement()->checkCollision(gameObject))
+		{
+			destroyBullet(i);
+			return true;
+		}
+	}
+	return false;
+}
+
+void Player::destroyBullet(int i) {
+	m_ActiveBullets[i]->getElement()->activateGameObject(false);
+	m_Bullets.returnElement(m_ActiveBullets[i]);
+	m_ActiveBullets[i] = m_ActiveBullets.back();
+	m_ActiveBullets.pop_back();
+}
 

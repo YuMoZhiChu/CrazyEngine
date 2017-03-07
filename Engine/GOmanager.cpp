@@ -5,7 +5,7 @@
 
 GOmanager* GOmanager::m_GOmanager = nullptr;
 
-GOmanager::GOmanager() : m_nGameObjects(0)
+GOmanager::GOmanager()
 {
 }
 
@@ -16,21 +16,25 @@ GOmanager::~GOmanager()
 
 int GOmanager::addGameObject(GameObject* gameObject)
 {
-	m_GameObjects[m_nGameObjects] = gameObject;
+	m_GameObjects.push_back(gameObject);
 	m_ModelMatrices.push_back(glm::mat4());
-	m_nGameObjects++;
-	return m_nGameObjects - 1;
+	return m_nGameObjectsCreated++;
 }
 
+void GOmanager::removeGameObject(GameObject* gameObject){
+	m_GameObjects.back()->setID(gameObject->getID());
+	m_GameObjects[gameObject->getID()] = m_GameObjects.back();
+	m_GameObjects.pop_back();
+	m_ModelMatrices[gameObject->getID()] = m_ModelMatrices.back();
+	m_ModelMatrices.pop_back();
+	m_nGameObjectsCreated--;
+}
 
+void GOmanager::drawGameObjects(Engine::GLSLProgram* shader) {
 
-void GOmanager::drawGameObject(Engine::GLSLProgram* shader) {
-
-	int i = m_GameObjects.size();
-
-	for each (auto object in m_GameObjects)
+	for(int i=0 ; i < m_GameObjects.size(); i++)
 	{
-		m_ModelMatrices[object.first] = object.second->updateModelMatrix();
+		m_ModelMatrices[i] = m_GameObjects[i]->updateModelMatrix();
 	}
 
 	//The second parameter of the glUniformMatrix4fv function specifies how many matrices are to be uploaded, 
@@ -40,9 +44,11 @@ void GOmanager::drawGameObject(Engine::GLSLProgram* shader) {
 	//where the glm::value_ptr function converts the matrix class into an array of 16 (4x4) floats.
 	glUniformMatrix4fv(shader->getUniformLocation("modelMatrix"), m_GameObjects.size(), GL_FALSE, glm::value_ptr(m_ModelMatrices[0]));
 
-	for each (auto object in m_GameObjects)
+	for (int i=0 ; i < m_GameObjects.size(); i++)
 	{
-		if (object.second->getState())
-		object.second->draw(shader);
+		if (m_GameObjects[i]->getState()) {
+			glUniform1i(shader->getUniformLocation("ID"), i);
+			m_GameObjects[i]->draw(shader);
+		}
 	}
 }

@@ -88,13 +88,6 @@ namespace Engine {
 
 	template <class Object>
 	PoolObject<Object>* Pool<Object>::getElement() {
-
-		for (int i=0 ; i < m_Elements.size(); i++)
-		{
-			std::cout << &m_Elements[i] << " " << m_Elements[i]->state << std::endl;
-		}
-		std::cout << std::endl;
-
 		if (m_NextFreeElement != nullptr) {
 			PoolObject<Object>* element = m_NextFreeElement;
 			m_NextFreeElement = m_NextFreeElement->NextElement;

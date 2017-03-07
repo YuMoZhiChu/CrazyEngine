@@ -30,7 +30,7 @@ class Mesh
 
     int m_nElements;
 
-	float m_MaxSize;
+	glm::vec3 m_MaxSize;
 
 public:
     Mesh();
@@ -40,6 +40,10 @@ public:
 	void setTexture(Texture* texture)
 	{
 		m_Texture = texture;
+	}
+
+	glm::vec3 getMaxSize() {
+		return m_MaxSize;
 	}
 
     bool loadMesh(const char* path);

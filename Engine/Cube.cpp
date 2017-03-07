@@ -5,82 +5,6 @@
 
 Cube::Cube(Texture* texture) :  m_VBO(0), m_VAO(0), m_EBO(0)
 {
-	m_Vertices[0].x = 0;
-	m_Vertices[0].y = 0;
-	m_Vertices[0].z = 0;
-	m_Vertices[0].uv.x = 1;
-	m_Vertices[0].uv.y = 0;
-
-	m_Vertices[1].x = 1;
-	m_Vertices[1].y = 0;
-	m_Vertices[1].z = 0;
-	m_Vertices[1].uv.x = 0;
-	m_Vertices[1].uv.y = 0;
-
-	m_Vertices[2].x = 0;
-	m_Vertices[2].y = 1;
-	m_Vertices[2].z = 0;
-	m_Vertices[2].uv.x = 1;
-	m_Vertices[2].uv.y = 1;
-
-	m_Vertices[3].x = 1;
-	m_Vertices[3].y = 1;
-	m_Vertices[3].z = 0;
-	m_Vertices[3].uv.x = 0;
-	m_Vertices[3].uv.y = 1;
-
-	m_Vertices[4].x = 0;
-	m_Vertices[4].y = 0;
-	m_Vertices[4].z = 1;
-	m_Vertices[4].uv.x = 0;
-	m_Vertices[4].uv.y = 0;
-
-	m_Vertices[5].x = 1;
-	m_Vertices[5].y = 0;
-	m_Vertices[5].z = 1;
-	m_Vertices[5].uv.x = 1;
-	m_Vertices[5].uv.y = 0;
-
-	m_Vertices[6].x = 0;
-	m_Vertices[6].y = 1;
-	m_Vertices[6].z = 1;
-	m_Vertices[6].uv.x = 0;
-	m_Vertices[6].uv.y = 1;
-
-	m_Vertices[7].x = 1;
-	m_Vertices[7].y = 1;
-	m_Vertices[7].z = 1;
-	m_Vertices[7].uv.x = 1;
-	m_Vertices[7].uv.y = 1;
-
-	// Vertex 0'
-	m_Vertices[8].x = 0;
-	m_Vertices[8].y = 0;
-	m_Vertices[8].z = 0;
-	m_Vertices[8].uv.x = 0;
-	m_Vertices[8].uv.y = 1;
-
-	// Vertex 1'
-	m_Vertices[9].x = 1;
-	m_Vertices[9].y = 0;
-	m_Vertices[9].z = 0;
-	m_Vertices[9].uv.x = 1;
-	m_Vertices[9].uv.y = 1;
-
-	// Vertex 2'
-	m_Vertices[10].x = 0;
-	m_Vertices[10].y = 1;
-	m_Vertices[10].z = 0;
-	m_Vertices[10].uv.x = 0;
-	m_Vertices[10].uv.y = 0;
-
-	// Vertex 3'
-	m_Vertices[11].x = 1;
-	m_Vertices[11].y = 1;
-	m_Vertices[11].z = 0;
-	m_Vertices[11].uv.x = 1;
-	m_Vertices[11].uv.y = 0;
-
 	m_Texture = texture;
 }
 
@@ -89,8 +13,84 @@ Cube::~Cube()
 {
 }
 
-void Cube::Init(Engine::GLSLProgram* shaderProgram)
+void Cube::Init(Engine::GLSLProgram* shaderProgram, float x, float y, float z)
 {
+	m_Vertices[0].x = -x;
+	m_Vertices[0].y = -y;
+	m_Vertices[0].z = -z;
+	m_Vertices[0].uv.x = 1;
+	m_Vertices[0].uv.y = 0;
+
+	m_Vertices[1].x = x;
+	m_Vertices[1].y = -y;
+	m_Vertices[1].z = -z;
+	m_Vertices[1].uv.x = 0;
+	m_Vertices[1].uv.y = 0;
+
+	m_Vertices[2].x = -x;
+	m_Vertices[2].y = y;
+	m_Vertices[2].z = -z;
+	m_Vertices[2].uv.x = 1;
+	m_Vertices[2].uv.y = 1;
+
+	m_Vertices[3].x = x;
+	m_Vertices[3].y = y;
+	m_Vertices[3].z = -z;
+	m_Vertices[3].uv.x = 0;
+	m_Vertices[3].uv.y = 1;
+
+	m_Vertices[4].x = -x;
+	m_Vertices[4].y = -y;
+	m_Vertices[4].z = z;
+	m_Vertices[4].uv.x = 0;
+	m_Vertices[4].uv.y = 0;
+
+	m_Vertices[5].x = x;
+	m_Vertices[5].y = -y;
+	m_Vertices[5].z = z;
+	m_Vertices[5].uv.x = 1;
+	m_Vertices[5].uv.y = 0;
+
+	m_Vertices[6].x = -x;
+	m_Vertices[6].y = y;
+	m_Vertices[6].z = z;
+	m_Vertices[6].uv.x = 0;
+	m_Vertices[6].uv.y = 1;
+
+	m_Vertices[7].x = x;
+	m_Vertices[7].y = y;
+	m_Vertices[7].z = z;
+	m_Vertices[7].uv.x = 1;
+	m_Vertices[7].uv.y = 1;
+
+	// Vertex 0'
+	m_Vertices[8].x = -x;
+	m_Vertices[8].y = -y;
+	m_Vertices[8].z = -z;
+	m_Vertices[8].uv.x = 0;
+	m_Vertices[8].uv.y = 1;
+
+	// Vertex 1'
+	m_Vertices[9].x = x;
+	m_Vertices[9].y = -y;
+	m_Vertices[9].z = -z;
+	m_Vertices[9].uv.x = 1;
+	m_Vertices[9].uv.y = 1;
+
+	// Vertex 2'
+	m_Vertices[10].x = -x;
+	m_Vertices[10].y = y;
+	m_Vertices[10].z = -z;
+	m_Vertices[10].uv.x = 0;
+	m_Vertices[10].uv.y = 0;
+
+	// Vertex 3'
+	m_Vertices[11].x = x;
+	m_Vertices[11].y = y;
+	m_Vertices[11].z = -z;
+	m_Vertices[11].uv.x = 1;
+	m_Vertices[11].uv.y = 0;
+
 	if (m_VAO == 0) {
 		glGenVertexArrays(1, &m_VAO);
 	}

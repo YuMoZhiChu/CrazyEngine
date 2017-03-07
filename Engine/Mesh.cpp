@@ -7,7 +7,7 @@ Mesh::Mesh() : m_Texture(nullptr), m_MaxSize(0)
 {
 }
 
-Mesh::Mesh(Texture *texture) : m_MaxSize(0)
+Mesh::Mesh(Texture *texture) : m_VBO(0), m_VAO(0), m_EBO(0), m_MaxSize(0)
 {
     m_Texture = texture;
 }
@@ -36,13 +36,13 @@ bool Mesh::loadMesh(const char* filename)
         if (code == "v") {
             float x, y, z;
             iss >> x >> y >> z;
-            tmpV.push_back(glm::vec3(x, z, y));
+            tmpV.push_back(glm::vec3(x, y, z));
 			findMaxSize(x, y, z);
         }
         else if (code == "vn") {
             float x, y, z;
             iss >> x >> y >> z;
-            tmpN.push_back(glm::vec3(x, z, y));
+            tmpN.push_back(glm::vec3(x, y, z));
         }
         else if (code == "vt") {
             float x, y;
@@ -150,14 +150,16 @@ void Mesh::drawMesh()
 
 void Mesh::findMaxSize(float &x, float &y, float &z)
 {
-	if (x > m_MaxSize) {
-		m_MaxSize = x;
+	if (x > m_MaxSize.x) {
+		m_MaxSize.x = x;
 	}
-	if (y > m_MaxSize) {
-		m_MaxSize = x;
+
+	if (y > m_MaxSize.y) {
+		m_MaxSize.y = y;
 	}
-	if (z > m_MaxSize) {
-		m_MaxSize = x;
+
+	if (z > m_MaxSize.z) {
+		m_MaxSize.z = z;
 	}
 }
 

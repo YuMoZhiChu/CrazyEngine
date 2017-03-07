@@ -6,7 +6,7 @@ in vec2 texCord;
 out vec2 fragmUV;
 
 uniform mat4 cameraMatrix;
-uniform mat4 modelMatrix[10];
+uniform mat4 modelMatrix[100];
 
 uniform int ID;
 

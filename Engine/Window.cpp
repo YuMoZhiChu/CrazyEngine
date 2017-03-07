@@ -7,7 +7,7 @@ namespace Engine {
 
 	Window* Window::m_Window = nullptr;
 
-    Window::Window() : m_currentFPS(0), m_deltaTime(0)
+    Window::Window() : m_currentFPS(0), m_deltaTime(0), m_maxPhysicSteps(3)
     {
         m_Display = new SDL_DisplayMode[SDL_GetNumVideoDisplays()];
 		m_InputManager = InputManager::getInpuManager();

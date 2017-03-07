@@ -12,8 +12,13 @@ int main(int argc, char* argv[]) {
 
 	window->initSystem();
 
-	Game game;
-	game.init();
+	int difficulty;
+
+	std::cout << "Set difficulty [1-4]" << std::endl;
+	std::cin >> difficulty;
+
+	Game* game = new Game(difficulty);
+	game->init();
 
 	while (window->getGameState() != Engine::GameState::QUIT) {
 		window->processEvent();
@@ -25,10 +30,11 @@ int main(int argc, char* argv[]) {
 		window->calculateFPS();
 		//window->showFPS();
 
-		game.update();
+		game->update();
 		SDL_GL_SwapWindow(window->getSDLWindow());
 	}
 
+	delete game;
 	window->quitSystem();
 
 	return 0;

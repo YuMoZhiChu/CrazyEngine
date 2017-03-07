@@ -24,6 +24,7 @@ namespace Engine {
 		int m_currentFPS;
 		int m_detectedFPS[100];
 		float m_deltaTime;
+		int m_maxPhysicSteps;
 
 		GameState m_GameState = START;
 
@@ -51,6 +52,14 @@ namespace Engine {
 
 		float getDeltaTime() {
 			return m_deltaTime;
+		}
+
+		float getPhysicDeltaTime() {
+			return m_deltaTime / m_maxPhysicSteps;
+		}
+
+		int getMaxPhysicSteps() {
+			return m_maxPhysicSteps;
 		}
 
         ~Window();

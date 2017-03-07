@@ -13,13 +13,16 @@ class Camera3D
     bool m_NeedUpdate;
 	float m_Scale;
 	glm::vec3 m_UPaxis;
+	glm::vec3 m_XCameraAxis;
+	glm::vec3 m_YCameraAxis;
+	glm::vec3 m_ZCameraAxis;
 
     glm::mat4 m_CameraMatrix;
 
 public:
     
     void setPosition(glm::vec3 position) {
-        m_Position = position;
+        m_Position += position;
         m_NeedUpdate = true;
     }
 

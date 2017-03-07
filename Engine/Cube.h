@@ -15,7 +15,7 @@ class Cube
 public:
 	Cube(Texture* texture);
 	~Cube();
-	void Init(Engine::GLSLProgram * shaderProgram);
+	void Init(Engine::GLSLProgram * shaderProgram, float x = 0.5f, float y = 0.5f, float z = 0.5f);
 	void draw();
 };
 

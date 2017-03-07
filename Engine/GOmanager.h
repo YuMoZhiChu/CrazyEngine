@@ -12,11 +12,12 @@ class GOmanager
 {
 	static GOmanager* m_GOmanager;
 
-	std::map<int, GameObject*> m_GameObjects;
+	std::vector<GameObject*> m_GameObjects;
 	std::vector<glm::mat4> m_ModelMatrices;
-	int m_nGameObjects;
 
 	GOmanager();
+
+	int m_nGameObjectsCreated;
 
 public:
 	~GOmanager();
@@ -30,6 +31,8 @@ public:
 
 	int addGameObject(GameObject* gameObject);
 
-	void drawGameObject(Engine::GLSLProgram* shader);
+	void removeGameObject(GameObject * gameObject);
+
+	void drawGameObjects(Engine::GLSLProgram* shader);
 };
 

@@ -101,18 +101,14 @@ public:
 		return m_ID;
 	}
 
-	void initMesh(Engine::GLSLProgram* shader, const std::string& meshPath);
-	
-	void initCube(Engine::GLSLProgram* shader, float x = 0.5f, float y = 0.5f, float z = 0.5f);
-
 	glm::mat4 updateModelMatrix();
 
 	void draw(Engine::GLSLProgram* shader);
 
 	bool checkCollision(GameObject* object);
 
-	GameObject(Texture* texture, GameObjectState type = MESH);
 	GameObject(Mesh * mesh);
+	GameObject(Cube * cube);
 	~GameObject();
 };
 

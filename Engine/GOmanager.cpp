@@ -12,6 +12,7 @@ GOmanager::GOmanager()
 
 GOmanager::~GOmanager()
 {
+	delete m_GOmanager;
 }
 
 int GOmanager::addGameObject(GameObject* gameObject)
@@ -32,21 +33,20 @@ void GOmanager::removeGameObject(GameObject* gameObject){
 
 void GOmanager::drawGameObjects(Engine::GLSLProgram* shader) {
 
+	// Updates the Model Matrix of every gameobject 
+	// and we build the array of matrices to pass to the vertex shader
 	for(int i=0 ; i < m_GameObjects.size(); i++)
 	{
 		m_ModelMatrices[i] = m_GameObjects[i]->updateModelMatrix();
 	}
-
-	//The second parameter of the glUniformMatrix4fv function specifies how many matrices are to be uploaded, 
-	//because you can have arrays of matrices in GLSL.
-	//The third parameter specifies whether the specified matrix should be transposed before usage.
-	//The last parameter specifies the matrix to upload, 
-	//where the glm::value_ptr function converts the matrix class into an array of 16 (4x4) floats.
+	
+	// Pass the array of matrices to the vertex shader
 	glUniformMatrix4fv(shader->getUniformLocation("modelMatrix"), m_GameObjects.size(), GL_FALSE, glm::value_ptr(m_ModelMatrices[0]));
 
 	for (int i=0 ; i < m_GameObjects.size(); i++)
 	{
 		if (m_GameObjects[i]->getState()) {
+			// Set the correct matrix to use in the vertex shader
 			glUniform1i(shader->getUniformLocation("ID"), i);
 			m_GameObjects[i]->draw(shader);
 		}

@@ -41,6 +41,7 @@ Player::Player(Mesh* mesh) : GameObject(mesh)
 
 Player::~Player()
 {
+	delete m_Cube;
 	for each (auto var in m_Bullets.getElements())
 	{
 		delete var->getElement();
@@ -53,10 +54,11 @@ void Player::init(Engine::GLSLProgram* shader, int nBullets)
 	GameObject::setScale(glm::vec3(0.01f, 0.01f, 0.01f));
 	GameObject::setRotation(glm::vec3(0.0f, 1.0f, 0.0f), -90);
 	
+	m_Cube = new Cube(TextureCache::getTextureCache()->getTexture("textures/ronnie.jpg"));
+	m_Cube->Init(shader);
+
 	for (int i = 0; i < nBullets; i++) {
-		GameObject* newBullet = new GameObject(TextureCache::getTextureCache()->getTexture("textures/ronnie.jpg"), 
-												GameObjectState::CUBE);
-		newBullet->initCube(shader);
+		GameObject* newBullet = new GameObject(m_Cube);
 		newBullet->setScale(glm::vec3(0.01f, 0.01f, 0.01f));
 		newBullet->setRotation(GameObject::getRotation());
 		newBullet->activateGameObject(false);

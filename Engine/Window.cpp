@@ -26,10 +26,9 @@ namespace Engine {
 		static int Timer = SDL_GetTicks();
 
 		int currentTimer = SDL_GetTicks();
-		int deltaTime = currentTimer - Timer;
 
 		// calculates the average of the last 100 FPS detected every 1 sec
-		if (deltaTime > 1000) {
+		if (currentTimer - Timer > 1000) {
 			Timer = currentTimer;
 			int time = 0;
 			for (int i = 0; i < (sizeof(m_detectedFPS) / sizeof(*m_detectedFPS)); i++) {
@@ -51,6 +50,7 @@ namespace Engine {
 
 	void Window::processEvent()
 	{
+		// Update the map of the keys pressed the previus frame 
 		m_InputManager->update();
 
 		SDL_Event SDL_event;
@@ -81,6 +81,7 @@ namespace Engine {
 
 	Window::~Window()
     {
+		delete m_Display;
 		delete m_Window;
     }
 
@@ -150,6 +151,7 @@ namespace Engine {
 
 		if (Timer != currentTimer) {
 			i++;
+			// We calculate the FPS of the last 100 frames
 			m_detectedFPS[i % 100] = 1000 / (currentTimer - Timer);
 			Timer = currentTimer;
 		}

@@ -6,21 +6,6 @@
 
 #include "GOmanager.h"
 
-GameObject::GameObject(Texture* texture, GameObjectState type) :
-	m_ModelMatrixNeedUpdate(false),
-	m_State(true),
-	m_Scale(1.0,1.0,1.0),
-	m_ModelMatrix(glm::mat4())
-{
-	if (type == CUBE) {
-		m_Cube = new Cube(texture);
-	}
-	else {
-		m_Mesh = new Mesh(texture);
-	}
-	m_ID = GOmanager::getManager()->addGameObject(this);
-}
-
 GameObject::GameObject(Mesh* mesh) :
 	m_ModelMatrixNeedUpdate(false),
 	m_State(true),
@@ -31,18 +16,14 @@ GameObject::GameObject(Mesh* mesh) :
 	m_ID = GOmanager::getManager()->addGameObject(this);
 }
 
-void GameObject::initMesh(Engine::GLSLProgram * shader, const std::string &meshPath)
+GameObject::GameObject(Cube* cube) :
+	m_ModelMatrixNeedUpdate(false),
+	m_State(true),
+	m_Scale(1.0, 1.0, 1.0)
 {
-	if (m_Mesh->loadMesh(&meshPath[0])) {
-		m_Mesh->loadGPUMesh(shader);
-	}
-	m_MaxColliderSize = m_Mesh->getMaxSize();
-}
-
-void GameObject::initCube(Engine::GLSLProgram * shader, float x, float y, float z)
-{
-	m_Cube->Init(shader, x, y, z);
-	m_MaxColliderSize = glm::vec3(abs(x), abs(y), abs(z));
+	m_Cube = cube;
+	m_MaxColliderSize = m_Cube->getMaxSize();
+	m_ID = GOmanager::getManager()->addGameObject(this);
 }
 
 void GameObject::draw(Engine::GLSLProgram* shader)
@@ -57,7 +38,6 @@ void GameObject::draw(Engine::GLSLProgram* shader)
 
 GameObject::~GameObject()
 {
-	delete m_Mesh;
 }
 
 glm::mat4 GameObject::updateModelMatrix()
@@ -94,7 +74,7 @@ void GameObject::setRotation(glm::vec3 rotation)
 {
 	m_Rotation = rotation;
 	m_RotationMatrix = glm::rotate(m_RotationMatrix, glm::radians(rotation.x), 
-						glm::vec3(1.0,0.0,0.0));
+						glm::vec3(1.0, 0.0, 0.0));
 	m_RotationMatrix = glm::rotate(m_RotationMatrix, glm::radians(rotation.y),
 						glm::vec3(0.0, 1.0, 0.0));
 	m_RotationMatrix = glm::rotate(m_RotationMatrix, glm::radians(rotation.z),

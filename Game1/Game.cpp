@@ -23,13 +23,12 @@ Game::~Game()
 {
 	delete m_CameraShader;
 	delete m_Camera;
+	delete m_SpaceShipMesh;
 	delete m_Player;
 	for each (auto var in m_Enemies.getElements())
 	{
 		delete var->getElement();
 	}
-	
-	delete m_SpaceShipMesh;
 }
 
 void Game::init()
@@ -64,6 +63,8 @@ void Game::update()
 	if (currentTime - timerAtBegin < 30000 && !m_PlayerDetroyed)
 	{
 		int physicStep = 0;
+
+		// Every frame we update the position and check the collisions "MaxPhysicSteps" times
 		while (physicStep < Engine::Window::getWindow()->getMaxPhysicSteps())
 		{
 			m_Player->update();
@@ -72,7 +73,10 @@ void Game::update()
 
 			checkCollision();
 
-			InputManager::getInpuManager()->update();
+			// Update the Input Manager to build the map of the keys pressed the first physic step 
+			if (physicStep == 0) {
+				InputManager::getInpuManager()->update();
+			}
 
 			physicStep++;
 		}
@@ -92,6 +96,8 @@ void Game::updateEnemies()
 	static int timePrevSpawn = SDL_GetTicks();
 
 	int timer = SDL_GetTicks();
+
+	// Every 2 seconds we activate 1-3 new enemies 
 	if (timer - timePrevSpawn > 2000) {
 		int i = 0;
 		while (i < 3) {

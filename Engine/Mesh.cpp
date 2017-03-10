@@ -14,6 +14,8 @@ Mesh::Mesh(Texture *texture) : m_VBO(0), m_VAO(0), m_EBO(0), m_MaxSize(0)
 
 Mesh::~Mesh()
 {
+	m_Vertices.clear();
+	m_Triangles.clear();
 }
 
 bool Mesh::loadMesh(const char* filename)

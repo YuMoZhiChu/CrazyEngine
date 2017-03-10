@@ -15,6 +15,10 @@ Cube::~Cube()
 
 void Cube::Init(Engine::GLSLProgram* shaderProgram, float x, float y, float z)
 {
+	m_MaxSize.x = x;
+	m_MaxSize.y = y;
+	m_MaxSize.z = z;
+
 	m_Vertices[0].x = -x;
 	m_Vertices[0].y = -y;
 	m_Vertices[0].z = -z;

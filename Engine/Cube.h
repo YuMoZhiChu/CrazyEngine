@@ -3,6 +3,7 @@
 #include "Vertex.h"
 #include "GLSLProgram.h"
 #include "Texture.h"
+#include <glm.hpp>
 
 class Cube
 {
@@ -12,10 +13,16 @@ class Cube
 	Vertex3D m_Vertices[12];
 	Texture* m_Texture;
 
+	glm::vec3 m_MaxSize;
+
 public:
 	Cube(Texture* texture);
 	~Cube();
 	void Init(Engine::GLSLProgram * shaderProgram, float x = 0.5f, float y = 0.5f, float z = 0.5f);
 	void draw();
+
+	glm::vec3 getMaxSize() {
+		return m_MaxSize;
+	}
 };
 

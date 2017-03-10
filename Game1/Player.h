@@ -8,6 +8,7 @@ class Player : public GameObject
 {
 	GameObject* m_Enemy1;
 
+	Cube* m_Cube;
 	Engine::Pool<GameObject> m_Bullets;
 
 	std::vector<Engine::PoolObject<GameObject>*> m_ActiveBullets;

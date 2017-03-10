@@ -33,15 +33,6 @@ void Texture::loadData(const std::string& texturePath, fileExtension flag) {
 		break;
 	}
 
-    if (flag == 0) {
-
-    }
-    else {
-        if (flag == 1) {
-
-        }
-    }
-
     // Set some texture parameters
     // (Set how the texture is sampled when the UV size coordinates are outside the range of 0 to 1) 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
